@@ -1,25 +1,47 @@
-import logo from './logo.svg';
+import React, { Component } from 'react';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
+
+import Searchbar from './components/Searchbar/Searchbar.jsx';
+import ImageGallery from './components/ImageGallery/ImageGallery.jsx';
+import Modal from './components/Modal/Modal.jsx';
+
 import './App.css';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+export default class App extends Component {
+  state = {
+    loading: false,
+    currentImage: null,
+    searchQuery: '',
+  };
+
+  onSearch = query => {
+    if (this.setState.searchQuery !== query) {
+      this.setState({ searchQuery: query });
+    }
+  };
+
+  viewImage = obj => {
+    this.setState({ currentImage: { ...obj } });
+    console.log(this.state.currentImage);
+  };
+
+  render() {
+    return (
+      <div className="App">
+        {/*{this.state.currentImage && console.log(this.currentImage.largeImageURL)}*/}
+        <ToastContainer position="top-right" autoClose={3000} />
+        <Searchbar onSearch={this.onSearch} />
+        {this.state.loading && <h1>PLEASE WAIT...</h1>}
+        <ImageGallery
+          searchQuery={this.state.searchQuery}
+          viewImage={this.viewImage}
+        />
+      </div>
+    );
+  }
 }
 
-export default App;
+{
+  /*<Modal imgRef={this.currentImage.largeImageURL} tags={this.currentImage.tags}*/
+}
