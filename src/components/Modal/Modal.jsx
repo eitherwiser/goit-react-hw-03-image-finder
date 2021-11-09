@@ -1,12 +1,20 @@
-import { render } from '@testing-library/react';
 import React from 'react'
 
-const Modal = (imgRef, tags) => {
+const Modal = ({ currentImage, btnClose }) => {
+  const { largeImageURL, tags } = currentImage;
 
-  render(
-    <div className="Overlay">
+  return (
+    <div className="Overlay"
+      onClick={(e) => {
+      if (e.target.nodeName !== 'IMG') {
+        return btnClose()
+      }
+      console.log(e.target.nodeName)
+      }}
+    >
       <div className="Modal">
-        <img src={imgRef} alt={tags} />
+        <img src={largeImageURL} alt={tags} />
+        <button onClick={btnClose}>close</button>
       </div>
     </div>
   )

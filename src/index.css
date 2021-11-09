@@ -26,6 +26,12 @@ img {
   height: auto;
 }
 
+.logo {
+  margin-right: 20px;
+  max-width: 148px;
+  max-height: 48px;
+}
+
 /*
  * Стили компонента App
  */
@@ -68,6 +74,7 @@ img {
   max-width: 600px;
   background-color: #fff;
   border-radius: 3px;
+  margin-right: 100px;
   overflow: hidden;
 }
 

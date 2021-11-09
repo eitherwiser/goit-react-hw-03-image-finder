@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import Searchbar from './components/Searchbar/Searchbar.jsx';
@@ -10,9 +9,9 @@ import './App.css';
 
 export default class App extends Component {
   state = {
-    loading: false,
     currentImage: null,
     searchQuery: '',
+    showModal: false,
   };
 
   onSearch = query => {
@@ -21,27 +20,35 @@ export default class App extends Component {
     }
   };
 
+  componentDidUpdate(prevState) {
+    if (prevState.currentImage !== this.state.currentImage) {
+    }
+  }
+
   viewImage = obj => {
     this.setState({ currentImage: { ...obj } });
-    console.log(this.state.currentImage);
+  };
+
+  //toggleModal = () => {
+  //  this.setState(({ showModal }) => ({
+  //    showModal: !showModal
+  //  }))
+  //}
+
+  closeModal = () => {
+    this.setState(() => ({ currentImage: null }));
   };
 
   render() {
+    const { currentImage, searchQuery } = this.state;
     return (
       <div className="App">
-        {/*{this.state.currentImage && console.log(this.currentImage.largeImageURL)}*/}
-        <ToastContainer position="top-right" autoClose={3000} />
+        {currentImage && (
+          <Modal currentImage={currentImage} btnClose={this.closeModal} />
+        )}
         <Searchbar onSearch={this.onSearch} />
-        {this.state.loading && <h1>PLEASE WAIT...</h1>}
-        <ImageGallery
-          searchQuery={this.state.searchQuery}
-          viewImage={this.viewImage}
-        />
+        <ImageGallery searchQuery={searchQuery} viewImage={this.viewImage} />
       </div>
     );
   }
-}
-
-{
-  /*<Modal imgRef={this.currentImage.largeImageURL} tags={this.currentImage.tags}*/
 }
