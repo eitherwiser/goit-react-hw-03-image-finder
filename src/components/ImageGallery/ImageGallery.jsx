@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ImageGalleryItem from '../ImageGalleryItem/ImageGalleryItem'
+import ImageGalleryItem from './ImageGalleryItem/ImageGalleryItem.jsx'
 import Button from '../Button/Button.jsx'
 import Loader from '../Loader/Loader.jsx'
 
@@ -19,11 +19,10 @@ export default class ImageGallery extends Component {
     const { page } = this.state;
     const URL = `${this.BASE_URL}&q=${this.props.searchQuery}&page=${page}`
     if (prevProps.searchQuery !== this.props.searchQuery) {
-      this.setState({ page: 1, imgGallery: null })
+      this.setState({ imgGallery: null, page: 1 })
       fetch(URL)
         .then(res => res.json())
         .then(res => this.setState({ imgGallery: res.hits }))
-        .finally()
     }
     if (prevState.page !== page && page !== 1) {
       fetch(URL)
@@ -53,7 +52,7 @@ export default class ImageGallery extends Component {
 
 
   render() {
-    const { imgGallery, page } = this.state
+    const { imgGallery, page} = this.state
 
     return (
       <>
@@ -63,6 +62,7 @@ export default class ImageGallery extends Component {
             {imgGallery.map(item => <ImageGalleryItem key={item.id} onClick={() => this.viewImage(item.id)} imgSrc={item.webformatURL} tags={item.tags} />)}
         </ul>
         }
+        { imgGallery && imgGallery.length === 0 && <h1>Sorry, but is no pictures with tag "{this.props.searchQuery}" there .</h1> }
         {
         // eslint-disable-next-line
           imgGallery && ((imgGallery.length % 12) == false) && imgGallery.length > 11  && <Button onClick={() => this.pageIncrement()} />

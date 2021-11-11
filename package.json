@@ -1,5 +1,6 @@
 {
   "name": "goit-react-hw-03-image-finder",
+  "homepage": "https://eitherwiser.github.io/goit-react-hw-03-image-finder/",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -16,6 +17,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "prepare": "husky install"
   },
   "eslintConfig": {
@@ -38,6 +41,7 @@
   },
   "devDependencies": {
     "eslint": "^7.32.0",
+    "gh-pages": "^3.2.3",
     "husky": ">=6",
     "lint-staged": ">=10",
     "prettier": "^2.4.1",

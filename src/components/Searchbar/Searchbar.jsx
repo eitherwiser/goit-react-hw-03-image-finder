@@ -3,14 +3,9 @@ import { toast } from 'react-toastify';
 import { FaSearch } from 'react-icons/fa'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
 
+
+//in form the example of using onKeyDown event, to deny reload page by submiting
 export default class Searchbar extends Component {
-
-  //prop-types = {
-  
-  //}
-
-
-
 
 
   state = {
@@ -58,7 +53,7 @@ export default class Searchbar extends Component {
             autoComplete="off"
             autoFocus
             placeholder="Search images and photos"
-            onChange={(e) => this.onChange(e)}
+            onChange={this.onChange}
             value={this.state.query}
           />
           <button onClick={this.onSubmit} className="SearchForm-button" type="button">
@@ -69,5 +64,3 @@ export default class Searchbar extends Component {
     )
   }
 }
-
-//in form the example of using onKeyDown event, to deny reload page by submiting
