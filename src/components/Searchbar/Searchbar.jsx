@@ -1,12 +1,7 @@
 import React, { Component } from 'react'
-
-import { FaSearch } from 'react-icons/fa'
-
-import { ToastContainer } from 'react-toastify';
 import { toast } from 'react-toastify';
+import { FaSearch } from 'react-icons/fa'
 import { ReactComponent as Logo } from '../../icons/logo.svg'
-
-
 
 export default class Searchbar extends Component {
 
@@ -30,9 +25,8 @@ export default class Searchbar extends Component {
     this.props.onSearch(this.state.query.toLowerCase());
     this.setState({query: ''})
   }
-    
 
-  
+
   render() {
   
     return (
@@ -45,10 +39,10 @@ export default class Searchbar extends Component {
           onKeyDown={
             (e) => {
               if (e.key === 'Enter') {
-                e.preventDefault();
+                e.preventDefault(); 
                 this.onSubmit(e);
-                }
-              }}
+              }
+            }}
         >
           <input
             className="SearchForm-input"
@@ -63,8 +57,9 @@ export default class Searchbar extends Component {
             <FaSearch />
           </button>
         </form>
-        <ToastContainer position="top-right" autoClose={3000} />
       </header>
     )
   }
 }
+
+//in form the example of using onKeyDown event, to deny reload page by submiting

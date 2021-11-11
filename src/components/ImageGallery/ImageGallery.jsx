@@ -18,17 +18,18 @@ export default class ImageGallery extends Component {
 
 
 
-  async componentDidUpdate(prevProps, prevState) {
+  componentDidUpdate(prevProps, prevState) {
     const { page } = this.state;
+    const URL = `${this.BASE_URL}&q=${this.props.searchQuery}&page=${page}`
     if (prevProps.searchQuery !== this.props.searchQuery) {
       this.setState({ page: 1, imgGallery: null })
-      await fetch(`${this.BASE_URL}&q=${this.props.searchQuery}&page=${page}`)
+      fetch(URL)
         .then(res => res.json())
         .then(res => this.setState({ imgGallery: res.hits }))
         .finally()
     }
     if (prevState.page !== page && page !== 1) {
-      fetch(`${this.BASE_URL}&q=${this.props.searchQuery}&page=${page}`)
+      fetch(URL)
         .then(res => res.json())
         .then(res => this.setState(prevState => ({ imgGallery: prevState.imgGallery.concat(res.hits) })))
         .finally(() => this.pageScroll())
@@ -53,18 +54,22 @@ export default class ImageGallery extends Component {
     )
   }
 
+
   render() {
     const { imgGallery, page } = this.state
 
     return (
       <>
-        {page && !imgGallery && <Loader />}
+        {page && !imgGallery  && <Loader />}
         {imgGallery && 
         <ul className="ImageGallery">
             {imgGallery.map(item => <ImageGalleryItem key={item.id} onClick={() => this.viewImage(item.id)} imgSrc={item.webformatURL} tags={item.tags} />)}
         </ul>
         }
-        {page && imgGallery && <Button onClick={() => this.pageIncrement()} />}
+        {
+        // eslint-disable-next-line
+          imgGallery && ((imgGallery.length % 12) == false) && imgGallery.length > 11  && <Button onClick={() => this.pageIncrement()} />
+        }
       </>
       )
   }

@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.min.css';
 
 import Searchbar from './components/Searchbar/Searchbar.jsx';
@@ -11,7 +13,6 @@ export default class App extends Component {
   state = {
     currentImage: null,
     searchQuery: '',
-    showModal: false,
   };
 
   onSearch = query => {
@@ -20,20 +21,9 @@ export default class App extends Component {
     }
   };
 
-  componentDidUpdate(prevState) {
-    if (prevState.currentImage !== this.state.currentImage) {
-    }
-  }
-
   viewImage = obj => {
     this.setState({ currentImage: { ...obj } });
   };
-
-  //toggleModal = () => {
-  //  this.setState(({ showModal }) => ({
-  //    showModal: !showModal
-  //  }))
-  //}
 
   closeModal = () => {
     this.setState(() => ({ currentImage: null }));
@@ -43,8 +33,9 @@ export default class App extends Component {
     const { currentImage, searchQuery } = this.state;
     return (
       <div className="App">
+        <ToastContainer position="top-right" autoClose={3000} />
         {currentImage && (
-          <Modal currentImage={currentImage} btnClose={this.closeModal} />
+          <Modal currentImage={currentImage} onClose={this.closeModal} />
         )}
         <Searchbar onSearch={this.onSearch} />
         <ImageGallery searchQuery={searchQuery} viewImage={this.viewImage} />
