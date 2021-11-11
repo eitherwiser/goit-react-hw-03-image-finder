@@ -1,16 +1,24 @@
-import { Component } from 'react'
+//example of using OnClick event for Overlay
+//and example of using componentDidmount for onKeyDown event, to close Modal by "Escape" key.
 
+import { Component } from 'react'
 import { BsHeartFill, BsFillEyeFill, BsFillCloudArrowDownFill, BsXLg } from "react-icons/bs"
 
 
 export default class Modal extends Component  {
 
+  componentDidMount () {
+    window.addEventListener('keydown', this.keyDownEscape)
+  }
+    
+  componentWillUnmount() {
+    window.removeEventListener('keydown', this.keyDownEscape)
+  }
+  
 
-componentDidMount () {
-
-  window.addEventListener('keydown', (e) => e.code === 'Escape' &&  this.props.onClose())
-
-}
+  keyDownEscape =(e) => {
+  e.code === 'Escape' &&  this.props.onClose()
+  }
     
 
 render() {
@@ -19,14 +27,7 @@ render() {
     const { largeImageURL, tags, user, userImageURL, pageURL, likes, views, downloads} = currentImage;
   
   return (
-      <div className="Overlay"
-      onClick={(e) => {
-      if (e.target.nodeName !== 'IMG') {
-        return onClose()
-      }
-      console.log(e.target.nodeName)
-      }}
-    >
+      <div className="Overlay" onClick={(e) => e.currentTarget === e.target && onClose()}>
       <div className="Modal">
         <img src={largeImageURL} alt={tags} />
         <span className="closeBtn textInfo" onClick={onClose}><BsXLg /></span>
@@ -42,7 +43,5 @@ render() {
     </div>
   )
   }
-  }
+}
 
-//example of using OnClick event for Overlay
-//and example of using componentDidmount for onKeyDown event, to close Modal by "Escape" key.

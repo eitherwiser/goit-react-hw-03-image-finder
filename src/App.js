@@ -1,11 +1,9 @@
 import React, { Component } from 'react';
-
-import { ToastContainer } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.min.css';
-
 import Searchbar from './components/Searchbar/Searchbar.jsx';
 import ImageGallery from './components/ImageGallery/ImageGallery.jsx';
 import Modal from './components/Modal/Modal.jsx';
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.min.css';
 
 import './App.css';
 

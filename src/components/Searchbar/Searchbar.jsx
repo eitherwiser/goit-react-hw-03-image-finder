@@ -5,6 +5,14 @@ import { ReactComponent as Logo } from '../../icons/logo.svg'
 
 export default class Searchbar extends Component {
 
+  //prop-types = {
+  
+  //}
+
+
+
+
+
   state = {
     query: ''
   }
