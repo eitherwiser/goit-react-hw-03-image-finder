@@ -6,35 +6,35 @@ import Loader from '../Loader/Loader.jsx'
 export default class ImageGallery extends Component {
 
   state = {
-    imgGallery: null,
-    page: null,
+    imgGallery: [],
+    totalHits: 0,
+    page: 0,
+    isLoading: false
   }
 
   API_KEY = '23041977-a95e3e3a8961062fc7edd2a7d';
-  BASE_URL = `https://pixabay.com/api/?key=${this.API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
+  PER_PAGE = 12;
+  BASE_URL = `https://pixabay.com/api/?key=${this.API_KEY}&image_type=photo&orientation=horizontal&per_page=${this.PER_PAGE}`;
 
 
-
-  componentDidUpdate(prevProps, prevState) {
-    const { page } = this.state;
-    const URL = `${this.BASE_URL}&q=${this.props.searchQuery}&page=${page}`
+  componentDidUpdate(prevProps) {
     if (prevProps.searchQuery !== this.props.searchQuery) {
-      this.setState({ imgGallery: null, page: 1 })
-      fetch(URL)
-        .then(res => res.json())
-        .then(res => this.setState({ imgGallery: res.hits }))
-    }
-    if (prevState.page !== page && page !== 1) {
-      fetch(URL)
-        .then(res => res.json())
-        .then(res => this.setState(prevState => ({ imgGallery: prevState.imgGallery.concat(res.hits) })))
-        .finally(() => this.pageScroll())
+      this.setState({ isLoading: true, imgGallery: [], page: 1 }, this.loadItems)
     }
   }
 
 
+  loadItems = () => {    
+          fetch(`${this.BASE_URL}&q=${this.props.searchQuery}&page=${this.state.page}`)
+        .then(res => res.json())
+            .then(res =>
+              this.setState(prevState =>
+                ({ isLoading: false, imgGallery: prevState.imgGallery.concat(res.hits), totalHits: res.totalHits })))
+        .finally(() => this.state.imgGallery.length > 11 && this.pageScroll())
+  }
+
   pageIncrement = () => {
-    this.setState(prevState => ({ page: prevState.page + 1 }))
+    this.setState(prevState => ({ isLoading: true, page: prevState.page + 1 }), this.loadItems)
   }
   
   pageScroll = () => {
@@ -52,22 +52,24 @@ export default class ImageGallery extends Component {
 
 
   render() {
-    const { imgGallery, page} = this.state
+    const { imgGallery, page, isLoading, totalHits} = this.state
 
     return (
       <>
-        {page && !imgGallery  && <Loader />}
-        {imgGallery && 
+        {imgGallery.length !== 0 && 
         <ul className="ImageGallery">
             {imgGallery.map(item => <ImageGalleryItem key={item.id} onClick={() => this.viewImage(item.id)} imgSrc={item.webformatURL} tags={item.tags} />)}
         </ul>
         }
-        { imgGallery && imgGallery.length === 0 && <h1>Sorry, but is no pictures with tag "{this.props.searchQuery}" there .</h1> }
+        {page !== 0 && imgGallery.length === 0 && !isLoading && <h1>Sorry, but is no pictures with tag "{this.props.searchQuery}" there .</h1> }
+        {isLoading && <Loader />}
         {
         // eslint-disable-next-line
-          imgGallery && ((imgGallery.length % 12) == false) && imgGallery.length > 11  && <Button onClick={() => this.pageIncrement()} />
+          !isLoading && imgGallery.length !== totalHits && <Button onClick={() => this.pageIncrement()} />
         }
       </>
       )
   }
 }
+
+//((imgGallery.length % this.PER_PAGE) == false) &&

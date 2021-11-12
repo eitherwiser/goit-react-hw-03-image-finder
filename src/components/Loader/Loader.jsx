@@ -8,10 +8,10 @@ export default class App extends Component {
   render() {
     return (
       <Loader
-        type="Puff"
+        type="ThreeDots"
         color="#3f51b5a4"
-        height={700}
-        width={600}
+        height={60}
+        width={160}
         timeout={20000}
       />
     );
