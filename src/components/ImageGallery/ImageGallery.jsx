@@ -63,13 +63,11 @@ export default class ImageGallery extends Component {
         }
         {page !== 0 && imgGallery.length === 0 && !isLoading && <h1>Sorry, but is no pictures with tag "{this.props.searchQuery}" there .</h1> }
         {isLoading && <Loader />}
-        {
-        // eslint-disable-next-line
-          !isLoading && imgGallery.length !== totalHits && <Button onClick={() => this.pageIncrement()} />
-        }
+        {!isLoading && imgGallery.length !== totalHits && <Button onClick={() => this.pageIncrement()} />}
       </>
       )
   }
 }
 
+// eslint-disable-next-line
 //((imgGallery.length % this.PER_PAGE) == false) &&
